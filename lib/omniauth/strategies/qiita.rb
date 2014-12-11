@@ -3,13 +3,10 @@ require 'omniauth/strategies/oauth2'
 module OmniAuth
   module Strategies
     class Qiita < OmniAuth::Strategies::OAuth2
-      # Give your strategy a name.
       option :name, "qiita"
 
       DEFAULT_SCOPE = 'read_qiita'
 
-      # This is where you pass the options you would pass when
-      # initializing your consumer from the OAuth gem.
       option :client_options, {
         :site => "https://qiita.com",
         :authorize_url => "https://qiita.com/api/v2/oauth/authorize",
@@ -22,11 +19,6 @@ module OmniAuth
 
       option :authorize_options, [:scope]
 
-      # These are called after authentication has succeeded. If
-      # possible, you should try to set the UID without making
-      # additional calls (if the user id is returned with the token
-      # or as a URI parameter). This may not be possible with all
-      # providers.
       uid { raw_info['id'] }
 
       info do
@@ -41,9 +33,7 @@ module OmniAuth
       end
 
       extra do
-        {
-          'raw_info' => raw_info
-        }
+        { 'raw_info' => raw_info }
       end
 
       def raw_info
@@ -82,6 +72,7 @@ module OmniAuth
           client_secret: client.secret,
           headers: { 'Content-Type' => 'application/json' }
         }
+
 
         get_token(params, deep_symbolize(options.auth_token_params))
       end
