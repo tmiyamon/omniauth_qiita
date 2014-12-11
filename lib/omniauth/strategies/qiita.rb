@@ -60,7 +60,7 @@ module OmniAuth
 
       def authorize_params
         super.tap do |params|
-          params[:scope] = request.params['scope'] || DEFAULT_SCOPE
+          params[:scope] ||= request.params['scope'] || DEFAULT_SCOPE
         end
       end
 
