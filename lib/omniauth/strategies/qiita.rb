@@ -27,12 +27,16 @@ module OmniAuth
       # additional calls (if the user id is returned with the token
       # or as a URI parameter). This may not be possible with all
       # providers.
-      uid { raw_info['client_id'] }
+      uid { raw_info['id'] }
 
       info do
         {
-          :name => raw_info['name'],
-          :email => raw_info['email']
+          'nickname'    => raw_info['id'],
+          'name'        => raw_info['name'],
+          'location'    => raw_info['location'],
+          'image'       => raw_info['profile_image_url'],
+          'description' => raw_info['description'],
+          'urls       ' => urls(raw_info)
         }
       end
 
@@ -44,6 +48,24 @@ module OmniAuth
 
       def raw_info
         @raw_info ||= access_token.get('/api/v2/authenticated_user').parsed || {}
+      end
+
+      def urls(raw_info)
+        hash = {}
+
+        [
+          ['Facebook', 'facebook_id',         ->(id){"https://www.facebook.com/#{id}"}],
+          ['Github',   'github_login_name',   ->(id){"https://github.com/#{id}"}],
+          ['LinkedIn', 'linkedin_id',         ->(id){"https://www.linkedin.com/in/#{id}"}],
+          ['Twitter',  'twitter_screen_name', ->(id){"https://twitter.com/#{id}"}],
+          ['Website',  'website_url',         ->(url){url},]
+        ].each do |label, key, url_gen|
+          if raw_info.key? key and raw_info[key] and raw_info[key].length > 0
+            hash[label] = url_gen.call(raw_info[key])
+          end
+        end
+
+        hash
       end
 
       def authorize_params
