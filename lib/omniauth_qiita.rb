@@ -1,2 +1,2 @@
-require "omniauth-qiita/version"
+require "omniauth_qiita/version"
 require 'omniauth/strategies/qiita'

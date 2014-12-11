@@ -1,15 +1,15 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'omniauth-qiita/version'
+require 'omniauth_qiita/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "omniauth-qiita"
+  spec.name          = "omniauth_qiita"
   spec.version       = Omniauth::Qiita::VERSION
   spec.authors       = ["Takuya Miyamoto"]
   spec.email         = ["miyamototakuya@gmail.com"]
   spec.summary       = 'Qiita Oauth2 Strategy for OmniAuth'
-  spec.homepage      = "https://github.com/tmiyamon/omniauth-qiita"
+  spec.homepage      = "https://github.com/tmiyamon/omniauth_qiita"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")

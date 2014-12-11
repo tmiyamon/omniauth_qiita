@@ -1,4 +1,4 @@
-# OmniAuth Qiita &nbsp;[![Build Status](https://secure.travis-ci.org/tmiyamon/omniauth-qiita.png?branch=master)](https://travis-ci.org/tmiyamon/omniauth-qiita)
+# OmniAuth Qiita &nbsp;[![Build Status](https://secure.travis-ci.org/tmiyamon/omniauth_qiita.png?branch=master)](https://travis-ci.org/tmiyamon/omniauth_qiita)
 
 **These notes are based on master, please see tags for README pertaining to specific releases.**
 
@@ -11,7 +11,7 @@ Supports the OAuth 2.0 server-side and client-side flows. Read the Qiita docs fo
 Add to your `Gemfile`:
 
 ```ruby
-gem 'omniauth-qiita'
+gem 'omniauth_qiita'
 ```
 
 Then `bundle install`.
@@ -88,7 +88,7 @@ The precise information available may depend on the permissions which you reques
 
 ## Contributing
 
-1. Fork it ( https://github.com/tmiyamon/omniauth-qiita/fork )
+1. Fork it ( https://github.com/tmiyamon/omniauth_qiita/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
