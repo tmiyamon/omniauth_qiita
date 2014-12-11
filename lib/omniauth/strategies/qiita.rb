@@ -14,7 +14,7 @@ module OmniAuth
       }
 
       option :token_params, {
-        :parse => :json
+        parse: :json
       }
 
       option :authorize_options, [:scope]
@@ -65,35 +65,24 @@ module OmniAuth
       end
 
       def build_access_token
-        verifier = request.params['code']
         params = {
-          code:          verifier,
+          code:          request.params['code'],
           client_id:     client.id,
-          client_secret: client.secret,
-          headers: { 'Content-Type' => 'application/json' }
+          client_secret: client.secret
         }
 
+        opts = {
+          headers: { 'Content-Type' => 'application/json' },
+          body:    params.to_json,
+        }.merge(options['token_params'])
 
-        get_token(params, deep_symbolize(options.auth_token_params))
-      end
-
-      def get_token(params, access_token_opts = {}, access_token_class = ::OAuth2::AccessToken)
-        opts = {:raise_errors => client.options[:raise_errors], :parse => params.delete(:parse)}
-        if client.options[:token_method] == :post
-          headers = params.delete(:headers)
-          opts[:body] = params.to_json
-          opts[:headers] =  {'Content-Type' => 'application/x-www-form-urlencoded'}
-          opts[:headers].merge!(headers) if headers
-        else
-          opts[:params] = params
-        end
-        response = client.request(client.options[:token_method], client.token_url, opts).tap do |res|
-          res.parsed['access_token'] = res.parsed['token']
+        response = client.request(:post, client.token_url, opts).tap do |res|
+          res.parsed['access_token'] = res.parsed.delete('token')
         end
 
         error = Error.new(response)
         fail(error) if client.options[:raise_errors] && !(response.parsed.is_a?(Hash) && response.parsed['access_token'])
-        access_token_class.from_hash(client, response.parsed.merge(access_token_opts))
+        ::OAuth2::AccessToken.from_hash(client, response.parsed.merge(deep_symbolize(options.auth_token_params)))
       end
     end
   end
