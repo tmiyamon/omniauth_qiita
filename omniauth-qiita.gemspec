@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Takuya Miyamoto"]
   spec.email         = ["miyamototakuya@gmail.com"]
   spec.summary       = 'Qiita Oauth2 Strategy for OmniAuth'
-  spec.homepage      = "https://github.com/tmiyamon/omniauth-wiita"
+  spec.homepage      = "https://github.com/tmiyamon/omniauth-qiita"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
