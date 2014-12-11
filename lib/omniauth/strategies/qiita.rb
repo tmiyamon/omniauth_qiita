@@ -28,7 +28,7 @@ module OmniAuth
           'location'    => raw_info['location'],
           'image'       => raw_info['profile_image_url'],
           'description' => raw_info['description'],
-          'urls       ' => urls(raw_info)
+          'urls'        => urls(raw_info)
         }
       end
 
