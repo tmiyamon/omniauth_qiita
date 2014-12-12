@@ -88,6 +88,16 @@ The precise information available may depend on the permissions which you reques
 
 'urls' in info may contains 'Facebook', 'Github', 'Twitter', 'LinkedIn' and 'Website' which depends on the account information you link in Qiita.
 
+## Supported Rubies
+
+Actively tested with the following Ruby versions:
+
+- MRI 2.1.0
+- MRI 2.0.0
+- MRI 1.9.3
+- JRuby
+- Rubinius
+
 ## Contributing
 
 1. Fork it ( https://github.com/tmiyamon/omniauth_qiita/fork )
