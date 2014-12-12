@@ -86,6 +86,8 @@ Here's an example *Auth Hash* available in `request.env['omniauth.auth']`:
 
 The precise information available may depend on the permissions which you request.
 
+'urls' in info may contains 'Facebook', 'Github', 'Twitter', 'LinkedIn' and 'Website' which depends on the account information you link in Qiita.
+
 ## Contributing
 
 1. Fork it ( https://github.com/tmiyamon/omniauth_qiita/fork )
