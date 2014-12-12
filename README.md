@@ -49,10 +49,10 @@ Here's an example *Auth Hash* available in `request.env['omniauth.auth']`:
   :uid => "tmiyamon",
   :info => {
     :nickname => "tmiyamon",
-    :name => "",
-    :location => "",
+    :name => "Takuya Miyamoto",
+    :location => "Tokyo, Japan",
     :image => "https://....",
-    :description => "",
+    :description => "An awesome engineer",
     :urls => {
       :Facebook => "https://www.facebook.com/...",
       :Github => "https://github.com/tmiyamon",
@@ -65,7 +65,7 @@ Here's an example *Auth Hash* available in `request.env['omniauth.auth']`:
   },
   :extra => {
     :raw_info => {
-      :description => "",
+      :description => "An awesome engineer",
       :facebook_id => "...",
       :followers_count => 5,
       :followees_count => 0,
@@ -73,12 +73,12 @@ Here's an example *Auth Hash* available in `request.env['omniauth.auth']`:
       :id => "tmiyamon",
       :items_count => 3,
       :linkedin_id => "",
-      :location => "",
-      :name => "",
+      :location => "Tokyo, Japan",
+      :name => "Takuya Miyamoto",
       :organization => "",
       :profile_image_url => "https://...",
       :twitter_screen_name => "...",
-      :website_url => ""
+      :website_url => "http://tmiyamon.github.io"
     }
   }
 }
