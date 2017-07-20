@@ -20,7 +20,7 @@ module OmniAuth
 
       option :authorize_options, [:scope]
 
-      uid { raw_info['id'] }
+      uid { raw_info['permanent_id'] }
 
       info do
         {
