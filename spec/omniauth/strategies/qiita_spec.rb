@@ -2,9 +2,14 @@ require 'spec_helper'
 
 describe OmniAuth::Strategies::Qiita do
   let(:request) { double('Request', :params => {}, :cookies => {}, :env => {}) }
+  let(:app) {
+    lambda do |env|
+      [200, {}, ['Hello.']]
+    end
+  }
 
   subject do
-    args = ['qiita', 'appid', 'secret', @options || {}].compact
+    args = [app, 'appid', 'secret', @options || {}].compact
     OmniAuth::Strategies::Qiita.new(*args).tap do |strategy|
       allow(strategy).to receive(:request) { request }
     end
@@ -82,6 +87,50 @@ describe OmniAuth::Strategies::Qiita do
     end
     it "returns website url if website_url is in raw_info" do
       expect(subject.urls({ 'website_url' => 'http://test.com'})).to eq({'Website' => 'http://test.com'})
+    end
+  end
+
+  describe '#callback_phase' do
+    before do
+      @options = { provider_ignores_state: true }
+      stub_request(:post, 'https://qiita.com/api/v2/access_tokens')
+        .to_return(status: 200, body: { token: 'token' }.to_json, headers: { 'Content-Type' => 'application/json' })
+    end
+
+    context 'when the API response is 200' do
+      let(:authenticated_user) do
+        {
+          'id' => 'yaotti',
+          'name' => 'Hiroshige Umino',
+          'location' => 'Tokyo, Japan',
+          'profile_image_url' => 'https://si0.twimg.com/profile_images/2309761038/1ijg13pfs0dg84sk2y0h_normal.jpeg',
+          'description' => 'Hello, world.'
+        }
+      end
+
+      before do
+        stub_request(:get, "https://qiita.com/api/v2/authenticated_user")
+          .to_return(body: authenticated_user.to_json, headers: { 'Content-Type' => 'application/json' })
+        allow(subject).to receive(:env) { { 'rack.session' => {} } }
+      end
+
+      it 'should set the API response into raw_info' do
+        subject.callback_phase
+        expect(subject.raw_info).to eq authenticated_user
+      end
+    end
+
+    context 'when the API response is 403 ( the user is in the team only mode )' do
+      before do
+        stub_request(:get, 'https://qiita.com/api/v2/authenticated_user')
+          .to_return(status: 403)
+        allow(subject).to receive(:fail!)
+      end
+
+      it 'should call fail!' do
+        subject.callback_phase
+        expect(subject).to have_received(:fail!).with(:no_authorization_team_mode, kind_of(OmniAuth::Qiita::NoAuthorizationTeamModeError))
+      end
     end
   end
 end
