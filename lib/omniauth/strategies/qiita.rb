@@ -1,5 +1,6 @@
 require 'omniauth/strategies/oauth2'
 require 'multi_json'
+require 'omniauth_qiita/no_authorization_team_mode_error'
 
 module OmniAuth
   module Strategies
@@ -39,6 +40,9 @@ module OmniAuth
 
       def raw_info
         @raw_info ||= access_token.get('/api/v2/authenticated_user').parsed || {}
+      rescue ::OAuth2::Error => origin_exception
+        e = origin_exception.response.status == 403 ? OmniAuth::Qiita::NoAuthorizationTeamModeError : origin_exception
+        raise e
       end
 
       def urls(raw_info)
@@ -98,6 +102,12 @@ module OmniAuth
 
       def build_access_token
         handle_access_token_response(request_access_token)
+      end
+
+      def callback_phase
+        super
+      rescue OmniAuth::Qiita::NoAuthorizationTeamModeError => e
+        fail!(:no_authorization_team_mode, e)
       end
     end
   end
